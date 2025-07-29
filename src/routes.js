@@ -26,6 +26,20 @@ router.get('/tasks', async (req, res) => {
     }
 });
 
+// Get a specific task by ID
+router.get('/tasks/:id', async (req, res) => {
+    try {
+        const taskId = parseInt(req.params.id, 10);
+        const task = await Task.findOne({ id: taskId });
+        if (!task) {
+            return res.status(404).json({ message: "Task not found" }); 
+        }
+        res.status(200).json(task);     
+    } catch (error) {
+        res.status(500).json({ message: "Error while retrieving the task", error: error.message });
+    }
+}); 
+
 // Get completed tasks
 router.get('/tasks/completed', async (req, res) => {
     try {
@@ -40,15 +54,17 @@ router.get('/tasks/completed', async (req, res) => {
 router.put('/tasks/:id/complete', async (req, res) => {
     try {
         const taskId = parseInt(req.params.id, 10);
-        const updatedTask = await Task.findOneAndUpdate(
-            { id: taskId },
-            { status: true },
-            { new: true }
-        );
+        const task = await Task.findOne({ id: taskId });
 
-        if (!updatedTask) {
+        if (!task) {
             return res.status(404).json({ message: "Task not found" });
         }
+
+        const updatedTask = await Task.findOneAndUpdate(
+            { id: taskId },
+            { status: !task.status },
+            { new: true }
+        );
 
         res.status(200).json(updatedTask);
     } catch (error) {
