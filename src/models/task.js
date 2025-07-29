@@ -3,7 +3,7 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const task = new mongoose.Schema({
     description : { type: String, required: true },
-    status : {type : Boolean, default: false},
+    state : {type : Boolean, default: false},
 });
 
 // Adding auto-incrementing ID field

@@ -7,8 +7,8 @@ router.use(express.json());
 // Create a new task
 router.post('/tasks', async (req, res) => {
     try {
-        const { description, status } = req.body;
-        const newTask = new Task({ description, status });
+        const { description, state } = req.body;
+        const newTask = new Task({ description, state });
         const savedTask = await newTask.save();
         res.status(201).json(savedTask);
     } catch (error) {
@@ -34,7 +34,7 @@ router.get('/tasks/:id', async (req, res) => {
         if (!task) {
             return res.status(404).json({ message: "Task not found" }); 
         }
-        res.status(200).json(task);     
+        res.state(200).json(task);     
     } catch (error) {
         res.status(500).json({ message: "Error while retrieving the task", error: error.message });
     }
@@ -43,7 +43,7 @@ router.get('/tasks/:id', async (req, res) => {
 // Get completed tasks
 router.get('/tasks/completed', async (req, res) => {
     try {
-        const completedTasks = await Task.find({ status: true });
+        const completedTasks = await Task.find({ state: true });
         res.status(200).json(completedTasks);
     } catch (error) {
         res.status(500).json({ message: "Error while retrieving completed tasks", error: error.message });
@@ -62,7 +62,7 @@ router.put('/tasks/:id/complete', async (req, res) => {
 
         const updatedTask = await Task.findOneAndUpdate(
             { id: taskId },
-            { status: !task.status },
+            { state: !task.state },
             { new: true }
         );
 
