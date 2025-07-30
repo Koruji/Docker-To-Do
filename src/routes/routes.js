@@ -26,6 +26,16 @@ router.get('/tasks', async (req, res) => {
     }
 });
 
+// Get completed tasks
+router.get('/tasks/completed', async (req, res) => {
+    try {
+        const completedTasks = await Task.find({ state : true });
+        res.status(200).json(completedTasks);
+    } catch (error) {
+        res.status(500).json({ message: "Error while retrieving completed tasks", error: error.message });
+    }
+});
+
 // Get a specific task by ID
 router.get('/tasks/:id', async (req, res) => {
     try {
@@ -34,21 +44,14 @@ router.get('/tasks/:id', async (req, res) => {
         if (!task) {
             return res.status(404).json({ message: "Task not found" }); 
         }
-        res.state(200).json(task);     
+        if(isNaN(taskId)) {
+            return res.status(400).json({ message: "Invalid task ID" });
+        }
+        res.status(200).json(task);     
     } catch (error) {
         res.status(500).json({ message: "Error while retrieving the task", error: error.message });
     }
 }); 
-
-// Get completed tasks
-router.get('/tasks/completed', async (req, res) => {
-    try {
-        const completedTasks = await Task.find({ state: true });
-        res.status(200).json(completedTasks);
-    } catch (error) {
-        res.status(500).json({ message: "Error while retrieving completed tasks", error: error.message });
-    }
-});
 
 // Complete a task
 router.put('/tasks/:id/complete', async (req, res) => {
