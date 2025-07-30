@@ -1,9 +1,8 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-const connectionString = process.env.DB_CONNECTION_STRING;
+const mongoURI = process.env.MONGO_URI || "mongodb://localhost:27017/tododb";
 
-mongoose.connect(connectionString, {
-    connectTimeoutMS: 2000,
+mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
