@@ -53,5 +53,5 @@ jobs:
           echo "MongoDB did not start in time" && exit 1
 
       - name: Run tests
-        run: pnpm run test
+        run: NODE_ENV=test pnpm run test
 
