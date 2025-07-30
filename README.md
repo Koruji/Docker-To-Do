@@ -23,7 +23,7 @@ Toutes les données sont stockées dans une base **MongoDB (NoSQL)**.
 ```
 
 * Le champ `state` indique si la tâche est terminée (`true`) ou à faire (`false`).
-* Un identifiant unique `_id` est automatiquement généré.
+* Un identifiant unique `id` est automatiquement généré.
 
 ## Utilisation
 Le projet fonctionne aussi bien **en local** que **déployé en ligne**.
@@ -47,8 +47,7 @@ Vous pouvez ensuite interagir avec l'API via `http://localhost:3000/tasks`.
 <img width="172" height="144" alt="Mongo Compass" src="https://github.com/user-attachments/assets/d30ebb04-2dba-460e-bca6-b03160d5a586"/>
 
 ### En ligne
-L'API est également déployée sur Render :
-`https://to-do-list-docker-mwrg.onrender.com`
+L'API est également déployée sur Render : [https://to-do-list-docker-mwrg.onrender.com](https://to-do-list-docker-mwrg.onrender.com)
 Ajoutez simplement la route souhaitée à l'URL ci-dessus pour tester les fonctionnalités.
 
 ## Structure & outils
