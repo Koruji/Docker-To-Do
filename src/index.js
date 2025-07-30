@@ -3,10 +3,12 @@ require("./connexion");
 const express = require("express");
 const app = express();
 const routes = require('./routes/routes');
+const errorHandler = require('./middleware/errorHandler');
 
 app.use(express.json());
 app.get("/", (req, res) => res.json({ message: "Lancement réussi" }));
 app.use("/", routes);
+app.use(errorHandler);
 
 module.exports = app;
 

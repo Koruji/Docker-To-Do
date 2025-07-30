@@ -4,92 +4,68 @@ const router = express.Router();
 
 router.use(express.json());
 
+const asyncHandler = fn => (req, res, next) =>
+    Promise.resolve(fn(req, res, next)).catch(next);
+
 // Create a new task
-router.post('/tasks', async (req, res) => {
-    try {
-        const { description, state } = req.body;
-        const newTask = new Task({ description, state });
-        const savedTask = await newTask.save();
-        res.status(201).json(savedTask);
-    } catch (error) {
-        res.status(400).json({ message: "Error while creating task", error: error.message });
-    }
-});
+router.post('/tasks', asyncHandler(async (req, res) => {
+    const { description, state } = req.body;
+    const newTask = new Task({ description, state });
+    const savedTask = await newTask.save();
+    res.status(201).json(savedTask);
+}));
 
 // Get all tasks
-router.get('/tasks', async (req, res) => {
-    try {
-        const tasks = await Task.find();
-        res.status(200).json(tasks);
-    } catch (error) {
-        res.status(500).json({ message: "Error while retrieving tasks", error: error.message });
-    }
-});
+router.get('/tasks', asyncHandler(async (req, res) => {
+    const tasks = await Task.find();
+    res.status(200).json(tasks);
+}));
 
 // Get completed tasks
-router.get('/tasks/completed', async (req, res) => {
-    try {
-        const completedTasks = await Task.find({ state : true });
-        res.status(200).json(completedTasks);
-    } catch (error) {
-        res.status(500).json({ message: "Error while retrieving completed tasks", error: error.message });
-    }
-});
+router.get('/tasks/completed', asyncHandler(async (req, res) => {
+    const completedTasks = await Task.find({ state : true });
+    res.status(200).json(completedTasks);
+}));
 
 // Get a specific task by ID
-router.get('/tasks/:id', async (req, res) => {
-    try {
-        const taskId = parseInt(req.params.id, 10);
-        const task = await Task.findOne({ id: taskId });
-        if (!task) {
-            return res.status(404).json({ message: "Task not found" }); 
-        }
-        if(isNaN(taskId)) {
-            return res.status(400).json({ message: "Invalid task ID" });
-        }
-        res.status(200).json(task);     
-    } catch (error) {
-        res.status(500).json({ message: "Error while retrieving the task", error: error.message });
+router.get('/tasks/:id', asyncHandler(async (req, res) => {
+    const taskId = parseInt(req.params.id, 10);
+    const task = await Task.findOne({ id: taskId });
+    if (!task) {
+        return res.status(404).json({status: 404,  message: "Task not found" }); 
     }
-}); 
+    if(isNaN(taskId)) {
+        return res.status(400).json({status: 400,  message: "Invalid task ID" });
+    }
+    res.status(200).json(task);     
+})); 
 
 // Complete a task
-router.put('/tasks/:id/complete', async (req, res) => {
-    try {
-        const taskId = parseInt(req.params.id, 10);
-        const task = await Task.findOne({ id: taskId });
+router.put('/tasks/:id/complete', asyncHandler(async (req, res) => {
+    const taskId = parseInt(req.params.id, 10);
+    const task = await Task.findOne({ id: taskId });
 
-        if (!task) {
-            return res.status(404).json({ message: "Task not found" });
-        }
-
-        const updatedTask = await Task.findOneAndUpdate(
-            { id: taskId },
-            { state: !task.state },
-            { new: true }
-        );
-
-        res.status(200).json(updatedTask);
-    } catch (error) {
-        res.status(400).json({
-            message: "Error while updating the task",
-            error: error.message
-        });
+    if (!task) {
+        return res.status(404).json({ status: 404, message: "Task not found" });
     }
-});
+
+    const updatedTask = await Task.findOneAndUpdate(
+        { id: taskId },
+        { state: !task.state },
+        { new: true }
+    );
+
+    res.status(200).json(updatedTask);
+}));
 
 // Delete a task
-router.delete('/tasks/:id', async (req, res) => {
-    try {
-        const taskId = parseInt(req.params.id, 10);
-        const deletedTask = await Task.findOneAndDelete({ id: taskId });
-        if (!deletedTask) {
-            return res.status(404).json({ message: "Task not found" });
-        }
-        res.status(200).json({ message: "Task deleted successfully" });
-    } catch (error) {
-        res.status(500).json({ message: "Error while deleting the task", error: error.message });
+router.delete('/tasks/:id', asyncHandler(async (req, res) => {
+    const taskId = parseInt(req.params.id, 10);
+    const deletedTask = await Task.findOneAndDelete({ id: taskId });
+    if (!deletedTask) {
+        return res.status(404).json({ status: 404, message: "Task not found" });
     }
-});
+    res.status(200).json({ message: "Task deleted successfully" });
+}));
 
 module.exports = router;
