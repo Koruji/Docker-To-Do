@@ -1,0 +1,1 @@
+const Handler = require('../../../src/middleware/errorHandler');

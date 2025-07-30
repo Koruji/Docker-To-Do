@@ -1,4 +1,4 @@
-const Task = require('../../src/models/task');
+const Task = require('../../../src/models/task');
 
 describe('Task Model', () => {
   describe('create', () => {
