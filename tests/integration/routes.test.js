@@ -1,6 +1,8 @@
 const request = require('supertest');
 const app = require('../../src/index');
-const mongoose = require('mongoose');
+require('dotenv').config({
+  path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env'
+});
 const Task = require('../../src/models/task');
 
 let taskId;
