@@ -5,7 +5,7 @@ describe('Task Model', () => {
     it('should create a task with valid data', () => {
       const taskData = {
         description: 'Test description',
-        state: false
+        state: false,
       };
 
       const task = new Task(taskData);
@@ -14,4 +14,3 @@ describe('Task Model', () => {
     });
   });
 });
-
