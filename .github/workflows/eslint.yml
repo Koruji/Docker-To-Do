@@ -19,13 +19,9 @@ on:
     - cron: '34 20 * * 1'
 
 jobs:
-  eslint:
-    name: Run eslint scanning
+  lint:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      security-events: write
-      actions: read
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -34,10 +30,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: 'npm'
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
 
       - name: Run ESLint
-        run: npm run lint
+        run: pnpm run lint
