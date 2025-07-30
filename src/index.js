@@ -8,7 +8,9 @@ app.use(express.json());
 app.get("/", (req, res) => res.json({ message: "Lancement réussi" }));
 app.use("/", routes);
 
-const port = process.env.PORT || 8080;
-app.listen(port, () =>
-  console.log(`app listening on http://localhost:${port}`)
-);
+module.exports = app;
+
+if (require.main === module) {
+  const port = process.env.PORT || 8080;
+  app.listen(port, () => console.log(`app listening on http://localhost:${port}`));
+}

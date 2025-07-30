@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -13,7 +14,12 @@
   "dependencies": {
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
+    "mongodb-memory-server": "^10.1.4",
     "mongoose": "^8.16.5",
-    "mongoose-sequence": "^6.0.1"
+    "mongoose-sequence": "^6.0.1",
+    "supertest": "^7.1.4"
+  },
+  "devDependencies": {
+    "jest": "^30.0.5"
   }
 }
